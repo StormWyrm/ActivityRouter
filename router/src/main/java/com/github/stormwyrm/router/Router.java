@@ -15,7 +15,20 @@ public class Router {
     private Router() {
     }
 
-    //通过register方法向map中注入
+    /**
+     * 加载编译生成AptRouterInitializer类，该类会调用register将映射关系注入到sRouter中
+     */
+    public static void init() {
+        try {
+            Class.forName("com.github.stormwyrm.router.AptRouterInitializer");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 通过register方法向map中注入
+     */
     public static void register(RouterInitializer routerInitializer) {
         routerInitializer.init(sRouter);
     }
