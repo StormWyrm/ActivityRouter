@@ -29,7 +29,7 @@ public class Router {
     /**
      * 通过register方法向map中注入
      */
-    public static void register(RouterInitializer routerInitializer) {
+    public static void register(IRouterInitializer routerInitializer) {
         routerInitializer.init(sRouter);
     }
 

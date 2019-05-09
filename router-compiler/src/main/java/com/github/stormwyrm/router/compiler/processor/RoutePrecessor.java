@@ -1,53 +1,45 @@
-package com.github.stormwyrm.router_compiler;
+package com.github.stormwyrm.router.compiler.processor;
 
-import com.github.stormwyrm.router_annotation.RouterActivity;
+import com.github.stormwyrm.router.annotation.Route;
+import com.github.stormwyrm.router.compiler.util.Consts;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.Elements;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 @AutoService(Processor.class)
-public class RouterPrecessor extends AbstractProcessor {
+public class RoutePrecessor extends BaseProcessor {
     private ClassName routerInitializer = ClassName.get("com.github.stormwyrm.router",
-            "RouterInitializer");
-    private Elements elementUtils;
+            "IRouterInitializer");
 
-    @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
-        super.init(processingEnv);
-        elementUtils = processingEnv.getElementUtils();
-    }
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return Collections.singleton(RouterActivity.class.getCanonicalName());
-    }
-
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.RELEASE_7;
+        return Collections.singleton(Route.class.getCanonicalName());
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        if (annotations.size() == 0)
+        if (annotations == null || annotations.size() == 0)
             return false;
 
-        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(RouterActivity.class);
+        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Route.class);
+        parseRoute(elements);
+        return true;
+    }
+
+    private void parseRoute(Set<? extends Element> elements) {
         TypeSpec.Builder aptRouterInitClassBuilder = TypeSpec.classBuilder("Apt" + routerInitializer.simpleName())
+                .addJavadoc(Consts.WARNING_TIPS)
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(routerInitializer)
                 .addStaticBlock(CodeBlock.builder().add("Router.register(new $L());\n", "Apt" + routerInitializer.simpleName()).build());
@@ -64,12 +56,12 @@ public class RouterPrecessor extends AbstractProcessor {
         }
 
         if (aptRouterInitMethodBuilder == null) {
-            return false;
+            return;
         }
 
         for (Element element : elements) {
-            RouterActivity routerActivity = element.getAnnotation(RouterActivity.class);
-            String value = routerActivity.value();
+            Route routerActivity = element.getAnnotation(Route.class);
+            String value = routerActivity.path();
             aptRouterInitMethodBuilder.addStatement("arg0.put($S,$T.class)", value, element.asType());
         }
 
@@ -82,9 +74,5 @@ public class RouterPrecessor extends AbstractProcessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        return false;
-
     }
 }

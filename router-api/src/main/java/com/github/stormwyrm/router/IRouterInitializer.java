@@ -4,6 +4,6 @@ import android.app.Activity;
 
 import java.util.Map;
 
-public interface RouterInitializer {
+public interface IRouterInitializer {
     void init(Map<String, Class<? extends Activity>> sRouter);
 }
