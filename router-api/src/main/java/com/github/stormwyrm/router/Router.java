@@ -118,9 +118,9 @@ public class Router {
 
     private void startActivity(Context context, Intent intent, PostCard postCard, int requestCode, NavigationCallback callback) {
         if (requestCode >= 0) {
-            ActivityCompat.startActivity(context, intent, null);
-        } else {
             ActivityCompat.startActivityForResult((Activity) context, intent, requestCode, null);
+        } else {
+            ActivityCompat.startActivity(context, intent, null);
         }
         if (callback != null)
             callback.onArrival(postCard);

@@ -1,9 +1,8 @@
 package com.github.stormwyrm.activityrouter
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.Switch
 import com.github.stormwyrm.router.Router
 
 class MainActivity : AppCompatActivity() {
@@ -21,8 +20,16 @@ class MainActivity : AppCompatActivity() {
                     .navigation()
             R.id.btnAutowired ->
                 Router.getInstance()
-                    .build("Other")
-                    .withByte("age0", 0)
+                    .build("Autowired")
+                    .withByte("age0", 1)
+                    .withShort("age1", 2)
+                    .withInt("age2", 3)
+                    .withLong("age3", 4)
+                    .withFloat("age4", 5.0f)
+                    .withDouble("age5", 6.0)
+                    .withChar("age6", '7')
+                    .withBoolean("age7", true)
+                    .withString("Name","liqingfeng")
                     .navigation()
         }
     }

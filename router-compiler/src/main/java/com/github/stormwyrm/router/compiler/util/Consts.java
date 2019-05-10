@@ -15,6 +15,7 @@ public class Consts {
     public static final String PACKAGE_NAME = "com.github.stormwyrm.router.";
     public static final String I_AUTOWIRED_INITIALIZER = PACKAGE_NAME + "initializer.IAutowiredInitializer";
     public static final String I_ROUTER_INITIALIZER = PACKAGE_NAME +"initializer.IRouterInitializer";
+    public static final String ROUTER = PACKAGE_NAME +"Router";
 
     //system interface
     public static final String ACTIVITY = "android.app.Activity";

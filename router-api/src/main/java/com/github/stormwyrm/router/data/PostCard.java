@@ -94,8 +94,18 @@ public class PostCard {
         return this;
     }
 
+    public PostCard withChar(String key,char value){
+        extras.putChar(key, value);
+        return this;
+    }
+
     public PostCard withBoolean(String key, boolean value) {
         extras.putBoolean(key, value);
+        return this;
+    }
+
+    public PostCard withString(String key,String value){
+        extras.putString(key, value);
         return this;
     }
 

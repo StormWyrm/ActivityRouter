@@ -20,6 +20,7 @@ import java.util.Set;
 public class RoutePrecessor extends BaseProcessor {
     private ClassName routerInitializer = ClassName.get("com.github.stormwyrm.router.initializer",
             "IRouterInitializer");
+    private ClassName router = ClassName.get("com.github.stormwyrm.router", "Router");
 
 
     @Override
@@ -43,7 +44,8 @@ public class RoutePrecessor extends BaseProcessor {
         TypeSpec.Builder aptRouterInitClassBuilder = TypeSpec.classBuilder(className)
                 .addJavadoc(Consts.WARNING_TIPS)
                 .addModifiers(Modifier.PUBLIC)
-                .addSuperinterface(routerInitializer);
+                .addSuperinterface(routerInitializer)
+                .addStaticBlock(CodeBlock.builder().add("$T.register(new $L());\n",router,className).build());
 
         //覆盖父类方法init方法
         MethodSpec.Builder aptRouterInitMethodBuilder = null;

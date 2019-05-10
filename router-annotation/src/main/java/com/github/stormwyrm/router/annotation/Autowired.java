@@ -9,6 +9,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 public @interface Autowired {
     String name() default "";
-
-    String desc() default "";
 }

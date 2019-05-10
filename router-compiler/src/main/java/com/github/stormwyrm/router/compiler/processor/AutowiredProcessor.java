@@ -79,12 +79,12 @@ public class AutowiredProcessor extends BaseProcessor {
             for (Element child : childs) {
                 Autowired annotation = child.getAnnotation(Autowired.class);
                 String fieldName = child.getSimpleName().toString();
-                if (!annotation.name().equals("")) {
-                    fieldName = annotation.name();
+                String fieldAliasName = annotation.name();
+                if (fieldAliasName.equals("")) {
+                    fieldAliasName = fieldName;
                 }
-
                 String statement = "target." + fieldName + " = extras.";
-                methodSpec.addStatement(buildStatement(statement,child,fieldName), fieldName);
+                methodSpec.addStatement(buildStatement(statement, child, fieldName),fieldAliasName);
             }
             methodSpec.endControlFlow();
             try {
@@ -95,29 +95,29 @@ public class AutowiredProcessor extends BaseProcessor {
         }
     }
 
-    private String buildStatement(String statement, Element child,String fieldName) {
+    private String buildStatement(String statement, Element child, String fieldName) {
         TypeMirror typeMirror = child.asType();
         switch (typeMirror.toString()) {
             case BYTE:
-                statement += "getByte($S,target."+fieldName+")";
+                statement += "getByte($S,target." + fieldName + ")";
                 break;
             case SHORT:
-                statement += "getShort($S,target."+fieldName+")";
+                statement += "getShort($S,target." + fieldName + ")";
                 break;
             case INTEGER:
-                statement += "getInt($S,target."+fieldName+")";
+                statement += "getInt($S,target." + fieldName + ")";
                 break;
             case LONG:
-                statement += "getLong($S,target."+fieldName+")";
+                statement += "getLong($S,target." + fieldName + ")";
                 break;
             case FLOAT:
-                statement += "getFloat($S,target."+fieldName+")";
+                statement += "getFloat($S,target." + fieldName + ")";
                 break;
             case DOUBEL:
-                statement += "getDouble($S,target."+fieldName+")";
+                statement += "getDouble($S,target." + fieldName + ")";
                 break;
             case CHAR:
-                statement += "getChar($S,target."+fieldName+")";
+                statement += "getChar($S,target." + fieldName + ")";
                 break;
             case STRING:
                 statement += "getString($S)";
