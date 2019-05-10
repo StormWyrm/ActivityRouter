@@ -13,14 +13,15 @@ public class Consts {
 
     //custom interface
     public static final String PACKAGE_NAME = "com.github.stormwyrm.router.";
-    public static final String I_AUTOWIRED_INITIALIZER = PACKAGE_NAME + "IAutowiredInitializer";
-    public static final String I_ROUTER_INITIALIZER = PACKAGE_NAME + "IRouterInitializer";
+    public static final String I_AUTOWIRED_INITIALIZER = PACKAGE_NAME + "initializer.IAutowiredInitializer";
+    public static final String I_ROUTER_INITIALIZER = PACKAGE_NAME +"initializer.IRouterInitializer";
 
     //system interface
     public static final String ACTIVITY = "android.app.Activity";
     public static final String FRAGMENT = "android.app.Fragment";
     public static final String FRAGMENT_V4 = "android.support.v4.app.Fragment";
     public static final String PARCELABLE = "android.os.Parcelable";
+    public static final String BUNDLE = "android.os.Bundle";
 
     // Java type
     private static final String LANG = "java.lang";

@@ -2,10 +2,12 @@ package com.github.stormwyrm.activityrouter
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.github.stormwyrm.router.Router
 import com.github.stormwyrm.router.annotation.Autowired
+import com.github.stormwyrm.router.annotation.Route
 
+@Route(path = "Autowired")
 class AutowiredActivity : AppCompatActivity() {
-
     @Autowired
     @JvmField
     var age0: Byte? = 0
@@ -41,5 +43,6 @@ class AutowiredActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_autowired)
+        Router.inject(this)
     }
 }

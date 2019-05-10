@@ -18,7 +18,7 @@ import java.util.Set;
 
 @AutoService(Processor.class)
 public class RoutePrecessor extends BaseProcessor {
-    private ClassName routerInitializer = ClassName.get("com.github.stormwyrm.router",
+    private ClassName routerInitializer = ClassName.get("com.github.stormwyrm.router.initializer",
             "IRouterInitializer");
 
 
@@ -38,11 +38,12 @@ public class RoutePrecessor extends BaseProcessor {
     }
 
     private void parseRoute(Set<? extends Element> elements) {
-        TypeSpec.Builder aptRouterInitClassBuilder = TypeSpec.classBuilder("Apt" + routerInitializer.simpleName())
+        String packageName = "com.github.stormwyrm.router";
+        String className = "AptRouterInitializer";
+        TypeSpec.Builder aptRouterInitClassBuilder = TypeSpec.classBuilder(className)
                 .addJavadoc(Consts.WARNING_TIPS)
                 .addModifiers(Modifier.PUBLIC)
-                .addSuperinterface(routerInitializer)
-                .addStaticBlock(CodeBlock.builder().add("Router.register(new $L());\n", "Apt" + routerInitializer.simpleName()).build());
+                .addSuperinterface(routerInitializer);
 
         //覆盖父类方法init方法
         MethodSpec.Builder aptRouterInitMethodBuilder = null;
@@ -66,7 +67,7 @@ public class RoutePrecessor extends BaseProcessor {
         }
 
 
-        JavaFile javaFile = JavaFile.builder("com.github.stormwyrm.router",
+        JavaFile javaFile = JavaFile.builder(packageName,
                 aptRouterInitClassBuilder.addMethod(aptRouterInitMethodBuilder.build()).build())
                 .build();
         try {

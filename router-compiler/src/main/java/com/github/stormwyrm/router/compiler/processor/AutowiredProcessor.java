@@ -69,23 +69,24 @@ public class AutowiredProcessor extends BaseProcessor {
                     .addAnnotation(Override.class)
                     .addStatement("$T target = ($T) thiz", ClassName.get(parent.asType()), ClassName.get(parent.asType()));
 
+            if (typeUtils.isSubtype(parent.asType(), activityTm)) {
+                methodSpec.addStatement("$T extras = target.getIntent().getExtras()", ClassName.get(elementUtils.getTypeElement(BUNDLE)));
+                methodSpec.beginControlFlow("if(extras != null)");
+            } else {
+                throw new RuntimeException("Only support Activity");
+            }
+
             for (Element child : childs) {
                 Autowired annotation = child.getAnnotation(Autowired.class);
                 String fieldName = child.getSimpleName().toString();
                 if (!annotation.name().equals("")) {
                     fieldName = annotation.name();
                 }
-                boolean isActivity = false;
-                String statement = "target." + fieldName + " = target.";
-                if (typeUtils.isSubtype(parent.asType(), activityTm)) {
-                    isActivity = true;
-                    statement += "getIntent().";
-                } else {
-                    throw new RuntimeException("Only support Activity");
-                }
-                methodSpec.addStatement(buildStatement(statement,child,fieldName, isActivity), fieldName);
-            }
 
+                String statement = "target." + fieldName + " = extras.";
+                methodSpec.addStatement(buildStatement(statement,child,fieldName), fieldName);
+            }
+            methodSpec.endControlFlow();
             try {
                 JavaFile.builder(packageName, typeSpec.addMethod(methodSpec.build()).build()).build().writeTo(filer);
             } catch (IOException e) {
@@ -94,38 +95,38 @@ public class AutowiredProcessor extends BaseProcessor {
         }
     }
 
-    private String buildStatement(String statement, Element child,String fieldName, boolean isActivity) {
+    private String buildStatement(String statement, Element child,String fieldName) {
         TypeMirror typeMirror = child.asType();
         switch (typeMirror.toString()) {
             case BYTE:
-                statement += "getByteExtra($S,target."+fieldName+")";
+                statement += "getByte($S,target."+fieldName+")";
                 break;
             case SHORT:
-                statement += "getShortExtra($S,target."+fieldName+")";
+                statement += "getShort($S,target."+fieldName+")";
                 break;
             case INTEGER:
-                statement += "getIntExtra($S,target."+fieldName+")";
+                statement += "getInt($S,target."+fieldName+")";
                 break;
             case LONG:
-                statement += "getLongExtra($S,target."+fieldName+")";
+                statement += "getLong($S,target."+fieldName+")";
                 break;
             case FLOAT:
-                statement += "getFloatExtra($S,target."+fieldName+")";
+                statement += "getFloat($S,target."+fieldName+")";
                 break;
             case DOUBEL:
-                statement += "getDoubleExtra($S,target."+fieldName+")";
+                statement += "getDouble($S,target."+fieldName+")";
                 break;
             case CHAR:
-                statement += "getCharExtra($S,target."+fieldName+")";
+                statement += "getChar($S,target."+fieldName+")";
                 break;
             case STRING:
-                statement += "getStringExtra($S)";
+                statement += "getString($S)";
                 break;
             case PARCELABLE:
-                statement += "getParcelableExtra($S)";
+                statement += "getParcelable($S)";
                 break;
             case SERIALIZABLE:
-                statement += "getSerializableExtra($S)";
+                statement += "getSerializable($S)";
                 break;
         }
         return statement;

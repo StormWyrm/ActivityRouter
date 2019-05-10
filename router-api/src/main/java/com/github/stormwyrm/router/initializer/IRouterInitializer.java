@@ -1,4 +1,4 @@
-package com.github.stormwyrm.router;
+package com.github.stormwyrm.router.initializer;
 
 import android.app.Activity;
 

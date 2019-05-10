@@ -6,6 +6,6 @@ import com.github.stormwyrm.router.Router
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        Router.init()
+        Router.init(this)
     }
 }
