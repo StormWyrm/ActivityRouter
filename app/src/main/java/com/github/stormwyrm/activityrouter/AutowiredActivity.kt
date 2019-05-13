@@ -6,6 +6,7 @@ import android.util.Log
 import com.github.stormwyrm.router.Router
 import com.github.stormwyrm.router.annotation.Autowired
 import com.github.stormwyrm.router.annotation.Route
+import kotlinx.android.synthetic.main.activity_autowired.*
 
 @Route(path = "Autowired")
 class AutowiredActivity : AppCompatActivity() {
@@ -45,6 +46,8 @@ class AutowiredActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_autowired)
         Router.inject(this)
-        Log.i("AutowiredActivity","age0 = $age0;age1 = $age1;age2 = $age2;age3 = $age3;age4 = $age4;age5 = $age5;age6 = $age6;name = $name")
+        val msg = "age0 = $age0;\nage1 = $age1;\nage2 = $age2;\nage3 = $age3;\nage4 = $age4;\nage5 = $age5;\nage6 = $age6;\nname = $name"
+        Log.i("AutowiredActivity",msg)
+        textView.text = msg
     }
 }

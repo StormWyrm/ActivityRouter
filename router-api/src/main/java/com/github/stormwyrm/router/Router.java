@@ -2,6 +2,7 @@ package com.github.stormwyrm.router;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -117,6 +118,12 @@ public class Router {
     }
 
     private void startActivity(Context context, Intent intent, PostCard postCard, int requestCode, NavigationCallback callback) {
+        if (intent.resolveActivity(context.getPackageManager()) == null) {
+            if (callback != null)
+                callback.onArrival(postCard);
+            return;
+        }
+
         if (requestCode >= 0) {
             ActivityCompat.startActivityForResult((Activity) context, intent, requestCode, null);
         } else {

@@ -26,11 +26,16 @@ public class PostCard {
     }
 
     public Object navigation() {
-        return navigation(null);
+        return navigation(null,null);
     }
+
 
     public Object navigation(Context context) {
         return navigation(context, null);
+    }
+
+    public Object navigation(NavigationCallback callback) {
+        return navigation(null, callback);
     }
 
     public Object navigation(Context context, NavigationCallback callback) {
@@ -121,5 +126,13 @@ public class PostCard {
             extras.putParcelable(key, value);
         }
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "PostCard{" +
+                "extras=" + extras +
+                ", path='" + path + '\'' +
+                '}';
     }
 }
