@@ -84,7 +84,7 @@ public class AutowiredProcessor extends BaseProcessor {
                     fieldAliasName = fieldName;
                 }
                 String statement = "target." + fieldName + " = extras.";
-                methodSpec.addStatement(buildStatement(statement, child, fieldName),fieldAliasName);
+                methodSpec.addStatement(buildStatement(statement, child, fieldName), fieldAliasName);
             }
             methodSpec.endControlFlow();
             try {
@@ -122,11 +122,16 @@ public class AutowiredProcessor extends BaseProcessor {
             case STRING:
                 statement += "getString($S)";
                 break;
-            case PARCELABLE:
-                statement += "getParcelable($S)";
-                break;
-            case SERIALIZABLE:
-                statement += "getSerializable($S)";
+            default:
+                TypeMirror parcelableType = elementUtils.getTypeElement(PARCELABLE).asType();
+                TypeMirror serializable = elementUtils.getTypeElement(SERIALIZABLE).asType();
+                if (typeUtils.isSubtype(typeMirror, parcelableType)) {
+                    statement += "getParcelable($S)";
+                } else if (typeUtils.isSubtype(typeMirror, serializable)) {
+                    statement = "target." + fieldName + " = ("+typeMirror.toString()+") extras.getSerializable($S)";
+                } else {
+                    throw new UnsupportedOperationException("不支持" + typeMirror.toString() + "类型参数自动注入");
+                }
                 break;
         }
         return statement;

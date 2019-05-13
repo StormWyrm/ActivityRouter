@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
                     .withChar("age6", '7')
                     .withBoolean("age7", true)
                     .withString("Name","liqingfeng")
+                    .withParcelable("student",Student(18,"liqingfeng"))
+                    .withSerializable("teacher",Teacher(40,"liweiqin"))
                     .navigation()
         }
     }

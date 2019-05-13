@@ -42,11 +42,20 @@ class AutowiredActivity : AppCompatActivity() {
     @JvmField
     var name: String? = ""
 
+    @Autowired
+    @JvmField
+    var student : Student? = null
+
+    @Autowired
+    @JvmField
+    var  teacher: Teacher? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_autowired)
         Router.inject(this)
-        val msg = "age0 = $age0;\nage1 = $age1;\nage2 = $age2;\nage3 = $age3;\nage4 = $age4;\nage5 = $age5;\nage6 = $age6;\nname = $name"
+        val msg = "age0 = $age0;\nage1 = $age1;\nage2 = $age2;\nage3 = $age3;\nage4 = $age4;\nage5 = $age5;\nage6 = $age6;\nname = $name;\nstudent = $student;\nteacher = $teacher"
+
         Log.i("AutowiredActivity",msg)
         textView.text = msg
     }
